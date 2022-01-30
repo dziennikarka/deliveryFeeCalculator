@@ -92,7 +92,7 @@ public class Calculator {
         return this.deliveryFee;
     }
 
-    public int calculateDistanceFee(int distanceInMeters) {
+    private int calculateDistanceFee(int distanceInMeters) {
         if (distanceInMeters <= DISTANCE_MINIMUM_METERS) {
             return KILOMETER_BASE_FEE;
         }
