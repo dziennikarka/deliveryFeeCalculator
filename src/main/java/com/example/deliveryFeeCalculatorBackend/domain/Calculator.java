@@ -61,11 +61,11 @@ public class Calculator {
     private int deliveryFee = -1;
 
     /**
-     * Calculates delivery fee
-     * @param cartTotal  total of customer's cart
+     * Calculates delivery fee based on cart total, delivery distance, number of items and time of delivery and estimates delivery fee in cents.
+     * @param cartTotal  total of customer's cart in cents
      * @param deliveryDistance how far the goods should be delivered, distance expressed in meters
      * @param items a number of items in the customer cart
-     * @param time time when delivery happens
+     * @param time time when delivery happens in ISO format, UTC time zone
      * @return calculated delivery fee in cents
      */
     public int calculateDeliveryFee(int cartTotal, int deliveryDistance, int items, String time) {
