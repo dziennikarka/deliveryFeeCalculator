@@ -1,11 +1,15 @@
 package com.example.deliveryFeeCalculatorBackend.domain;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents calculator, whose task is calculationg of delivery fee
+ */
 public class Calculator {
     /**
-     * Cart value in cents that entitles to free delivery
+     * Value of the cart in cents that entitles to free delivery
      */
     private static final int CART_HUNDRED_EUROS = 10000;
     /**
@@ -42,10 +46,6 @@ public class Calculator {
      */
     private static final int FEE_MAXIMUM = 1500;
     /**
-     * fees for deliveries happening on rush hour are multiplied by the coefficient
-     */
-    private static final double RUSH_HOUR_COEFFICIENT = 1.1;
-    /**
      * Day of rush hour deliveries
      */
     private static final String RUSH_DAY = "friday";
@@ -58,40 +58,46 @@ public class Calculator {
      */
     public static final int RUSH_END = 19;
 
-    private int deliveryFee = 0;
-
     /**
      * Calculates delivery fee based on cart total, delivery distance, number of items and time of delivery and estimates delivery fee in cents.
-     * @param cartTotal  total of customer's cart in cents
+     *
+     * @param cartTotal        total of customer's cart in cents
      * @param deliveryDistance how far the goods should be delivered, distance expressed in meters
-     * @param items a number of items in the customer cart
-     * @param time time when delivery happens in ISO format, UTC time zone
+     * @param items            a number of items in the customer cart
+     * @param time             time when order takes place in ISO format, UTC time zone
      * @return calculated delivery fee in cents
      */
     public int calculateDeliveryFee(int cartTotal, int deliveryDistance, int items, String time) {
+        int deliveryFee = 0;
         //cart total more than 100, delivery fee is 0
         if (cartTotal >= CART_HUNDRED_EUROS) {
-            this.deliveryFee = 0;
+            deliveryFee = 0;
         } else {
             //calculation of surcharge if cart total is less than 10
             if (cartTotal < SURCHARGE_MAX) {
-                this.deliveryFee = SURCHARGE_MAX - cartTotal;
+                deliveryFee = SURCHARGE_MAX - cartTotal;
             }
-            this.deliveryFee += calculateDistanceFee(deliveryDistance);
-            this.deliveryFee += calculateSurchargePerItem(items);
+            deliveryFee += calculateDistanceFee(deliveryDistance);
+            deliveryFee += calculateSurchargePerItem(items);
 
-            if(checkIfRushHour(time)){
+            if (checkIfRushHour(time)) {
                 //coefficient for the rush hour 1.1
-                this.deliveryFee += this.deliveryFee/10;
+                deliveryFee += deliveryFee / 10;
             }
 
-            if (this.deliveryFee > FEE_MAXIMUM) {
-                this.deliveryFee = FEE_MAXIMUM;
+            if (deliveryFee > FEE_MAXIMUM) {
+                deliveryFee = FEE_MAXIMUM;
             }
         }
-        return this.deliveryFee;
+        return deliveryFee;
     }
 
+    /**
+     * calculates delivery fee based on the distance between the store and customer's location.
+     * There is a base fee for the first kilometer and an extra fee for every 1 - 500 m
+     * @param distanceInMeters delivery distance in meters
+     * @return fee calculated based on the distance in cents
+     */
     private int calculateDistanceFee(int distanceInMeters) {
         if (distanceInMeters <= DISTANCE_MINIMUM_METERS) {
             return KILOMETER_BASE_FEE;
@@ -100,6 +106,12 @@ public class Calculator {
         return KILOMETER_BASE_FEE + (DISTANCE_EXTRA_FEE * (int) coefficient);
     }
 
+    /**
+     * calculates fee based on the number of items in the shopping cart. There is an extra surcharge for every item
+     * starting from the fifth.
+     * @param items a number of items in the shopping cart
+     * @return fee calculated based on the number of items in the shopping cart
+     */
     private int calculateSurchargePerItem(int items) {
         if (items > MAXIMUM_ITEMS_FREE) {
             return (items - MAXIMUM_ITEMS_FREE) * SURCHARGE_PER_ITEM;
@@ -107,13 +119,17 @@ public class Calculator {
         return 0;
     }
 
-    public Boolean checkIfRushHour(String time) {
+    /**
+     * checks whether the order date is Friday rush hour (15.00 - 18.59)
+     * @param time an order day in ISO format, UTC time zone
+     * @return true of it is rush hour and false otherwise
+     */
+    private Boolean checkIfRushHour(String time) {
         LocalDateTime timeObj = LocalDateTime.parse(time, DateTimeFormatter.ISO_INSTANT.withZone(ZoneId.of("UTC")));
-
         String dayOfWeek = timeObj.getDayOfWeek().toString().toLowerCase();
 
-        if (dayOfWeek.equals(RUSH_DAY)){
-            if(timeObj.getHour() >= RUSH_START && timeObj.getHour() < RUSH_END){
+        if (dayOfWeek.equals(RUSH_DAY)) {
+            if (timeObj.getHour() >= RUSH_START && timeObj.getHour() < RUSH_END) {
                 return true;
             }
         }

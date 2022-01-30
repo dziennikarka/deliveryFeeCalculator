@@ -80,12 +80,6 @@ public class CalculatorTest {
     }
 
     @Test
-    public void testCheckFridays(){
-        Boolean actual = calculator.checkIfRushHour("2022-01-28T18:00:00Z");
-        assertEquals(true, actual, "Checking whether delivery happens on Friday rush hour");
-    }
-
-    @Test
     public void testCheckDeliveryFriday(){
         int actual = calculator.calculateDeliveryFee(790, 2235, 4, "2022-01-28T18:00:00Z");
         assertEquals(781, actual, "Calculation of delivery fee");
