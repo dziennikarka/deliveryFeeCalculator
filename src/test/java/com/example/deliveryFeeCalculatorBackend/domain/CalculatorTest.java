@@ -51,20 +51,20 @@ public class CalculatorTest {
 
     @Test
     public void testSurchargePerItem() {
-        int actual = calculator.calculateSurchargePerItem(4);
-        assertEquals(0, actual, "If there are less than 5 items in the cart, no surcharge");
+        int actual = calculator.calculateDeliveryFee(1000, 1000, 4, "2021-10-12T13:00:00Z");
+        assertEquals(200, actual, "If there are less than 5 items in the cart, no surcharge");
     }
 
     @Test
     public void testTwoSurchargePerItem() {
-        int actual = calculator.calculateSurchargePerItem(5);
-        assertEquals(50, actual, "If there are 5 items or more in the cart, extra 50 cents are added for each item");
+        int actual = calculator.calculateDeliveryFee(1000, 1000, 5, "2021-10-12T13:00:00Z");
+        assertEquals(250, actual, "If there are 5 items or more in the cart, extra 50 cents are added for each item");
     }
 
     @Test
     public void testThreeSurchargePerItem() {
-        int actual = calculator.calculateSurchargePerItem(10);
-        assertEquals(300, actual, "If there are 5 items or more in the cart, extra 50 cents are added for each item");
+        int actual = calculator.calculateDeliveryFee(1000, 1000, 10, "2021-10-12T13:00:00Z");
+        assertEquals(500, actual, "If there are 5 items or more in the cart, extra 50 cents are added for each item");
     }
 
     @Test
