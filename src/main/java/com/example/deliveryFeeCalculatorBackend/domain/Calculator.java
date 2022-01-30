@@ -100,7 +100,7 @@ public class Calculator {
         return KILOMETER_BASE_FEE + (DISTANCE_EXTRA_FEE * (int) coefficient);
     }
 
-    public int calculateSurchargePerItem(int items) {
+    private int calculateSurchargePerItem(int items) {
         if (items > MAXIMUM_ITEMS_FREE) {
             return (items - MAXIMUM_ITEMS_FREE) * SURCHARGE_PER_ITEM;
         }
