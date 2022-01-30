@@ -1,13 +1,17 @@
 package com.example.deliveryFeeCalculatorBackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents request payload that includes value of the shopping cart in cents, the distance between the store and customer location in meters,
  * the number of items in the customer's shopping cart, order time in ISO format
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FeeRequest {
     /**
      * value of the shopping cart in cents
