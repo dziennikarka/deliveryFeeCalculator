@@ -27,25 +27,25 @@ public class CalculatorTest {
 
     @Test
     public void testFirstKilometerFee() {
-        int actual = calculator.calculateDistanceFee(1000);
+        int actual = calculator.calculateDeliveryFee(1000, 1000, 4, "2021-10-12T13:00:00Z");
         assertEquals(200, actual, "Fee for the first kilometer (1000 meters) is 2 €");
     }
 
     @Test
     public void testAdditionalKilometersFee() {
-        int actual = calculator.calculateDistanceFee(1499);
+        int actual = calculator.calculateDeliveryFee(1000, 1499, 4, "2021-10-12T13:00:00Z");
         assertEquals(300, actual, "Fee for extra distance, that is less than 500 meters");
     }
 
     @Test
     public void testTwoAdditionalKilometersFee() {
-        int actual = calculator.calculateDistanceFee(1500);
+        int actual = calculator.calculateDeliveryFee(1000, 1500, 4, "2021-10-12T13:00:00Z");
         assertEquals(300, actual, "Fee for extra distance, that equals to 500 meters");
     }
 
     @Test
     public void testThreeAdditionalKilometersFee() {
-        int actual = calculator.calculateDistanceFee(1501);
+        int actual = calculator.calculateDeliveryFee(1000, 1501, 4, "2021-10-12T13:00:00Z");
         assertEquals(400, actual, "Fee for extra distance, that is more than 500 meters");
     }
 

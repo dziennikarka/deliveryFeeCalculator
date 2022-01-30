@@ -58,7 +58,7 @@ public class Calculator {
      */
     public static final int RUSH_END = 19;
 
-    private int deliveryFee = -1;
+    private int deliveryFee = 0;
 
     /**
      * Calculates delivery fee based on cart total, delivery distance, number of items and time of delivery and estimates delivery fee in cents.
@@ -81,7 +81,8 @@ public class Calculator {
             this.deliveryFee += calculateSurchargePerItem(items);
 
             if(checkIfRushHour(time)){
-                this.deliveryFee *= RUSH_HOUR_COEFFICIENT;
+                //coefficient for the rush hour 1.1
+                this.deliveryFee += this.deliveryFee/10;
             }
 
             if (this.deliveryFee > FEE_MAXIMUM) {
